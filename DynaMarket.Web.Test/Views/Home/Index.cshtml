@@ -1,0 +1,54 @@
+﻿<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title></title>
+
+	@*<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>*@
+	<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+	<script src="https://code.highcharts.com/stock/highstock.js"></script>
+	<script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+	<script src="https://code.highcharts.com/maps/modules/map.js"></script>
+
+	<script src="~/Scripts/jquery.signalR-2.3.0.min.js"></script>
+	<script src="/signalr/hubs"></script>
+
+</head>
+<body>
+
+
+	<div id="chartdiv"></div>
+	<div class="buttons_block">
+		<input value="candlestick" type="button" id="typeLine" />
+		<!-- input value="1с" type="button" id="period1"/ -->
+		<input value="5с" type="button" id="period5" />
+		<!-- input value="15с" type="button" id="period"/>
+		<input value="30с" type="button" id="period"/ -->
+	</div>
+	<script src="~/Scripts/scripts/dynachart.js"></script>
+
+	<script>
+
+		var chart = null;
+		$(document).ready(function () {
+			var chat = $.connection.dataHub;
+			chat.client.update = function (data) {
+				console.log(data);
+				var data = data.data;
+				if (data.length == 0)
+					return;
+
+				updateData(data[0].Open, data[0].Close, data[0].High, data[0].Low, data[0].Timestamp);
+			};
+			$.connection.hub.start().done(function () { console.log('connection started'); });
+
+
+		});
+
+	</script>
+
+
+
+
+
+
+</body>
+</html>
